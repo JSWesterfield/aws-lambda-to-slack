@@ -4,13 +4,14 @@ import urllib
 
 # initial challenge, def lambda_handler(event, context) is the entrypoint of every lambda function. 
 # The event parameter gives you info about the event that triggered the function (the slack API post request in our case)
-def lambda_handler(event, context):
-    slack_event = json.loads(event["body"])
-    challenge = slack_event["challenge"]
-    return {
-        'statusCode': 200,
-        'body': challenge
-    }
+
+# def lambda_handler(event, context):
+#     slack_event = json.loads(event["body"])
+#     challenge = slack_event["challenge"]
+#     return {
+#         'statusCode': 200,
+#         'body': challenge
+#     }
 
 def is_bot(event): 
     return 'bot_profile' in event['event']
@@ -41,3 +42,13 @@ def send_text_response(event, response_text):
     )
     res = urllib.request.urlopen(request).read()
     print('res:', res)
+
+def lambda_handler(event, context): 
+    event = json.loads(event["body"])
+    if message_has_resume(event):
+        send_text_response(event, "Hello from slack bot via AWS Lambda function.")
+
+        return {
+            'statusCode': 200,
+            'body': 'OK'
+        }
