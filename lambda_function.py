@@ -1,6 +1,7 @@
 import json
 import os
 import urllib
+ import boto3
 
 # initial challenge, def lambda_handler(event, context) is the entrypoint of every lambda function. 
 # The event parameter gives you info about the event that triggered the function (the slack API post request in our case)
@@ -52,3 +53,17 @@ def lambda_handler(event, context):
             'statusCode': 200,
             'body': 'OK'
         }
+
+
+def updateMessage(newContent):
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('reply')
+    table.update_item(
+    Key={
+        'name': 'default'
+    },
+    UpdateExpression = 'SET content = :content',
+    ExpressionAttributeValues = {
+        ':content': newContent
+    }
+)
