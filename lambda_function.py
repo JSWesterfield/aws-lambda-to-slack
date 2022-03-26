@@ -1,7 +1,7 @@
 import json
 import os
 import urllib
- import boto3
+import boto3
 
 # initial challenge, def lambda_handler(event, context) is the entrypoint of every lambda function. 
 # The event parameter gives you info about the event that triggered the function (the slack API post request in our case)
@@ -27,7 +27,7 @@ def send_text_response(event, response_text):
     SLACK_URL = "https://slack.com/api/chat.postEphmeral" # use chat.postMessage if we want visible for everyBody
     channel_id = event["event"]["channel"]
     user = event["event"]["user"]
-    bot_token = os.environ["BOT_TOKEN"]
+    bot_token = os.environ["slack_bot_token"]
     data = urllib.parse.urlencode({
         "token": bot_token,
         "channel": channel_id,
